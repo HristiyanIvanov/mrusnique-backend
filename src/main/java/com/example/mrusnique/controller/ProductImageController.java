@@ -6,6 +6,7 @@ import com.example.mrusnique.service.ProductImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +23,24 @@ public class ProductImageController {
         return ResponseEntity.ok(savedProductImage);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ProductImage>> getAllProductImages() {
+        List<ProductImage> productImages = productImageService.getAllProductImages();
+        return ResponseEntity.ok(productImages);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductImage> uploadProductImage(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("productId") Integer productId) {
+        try {
+            ProductImage savedProductImage = productImageService.uploadProductImage(file, productId);
+            return ResponseEntity.ok(savedProductImage);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @GetMapping("/{imageId}")
     public ResponseEntity<ProductImage> getProductImage(@PathVariable Integer imageId) {
         ProductImage productImage = productImageService.getProductImageById(imageId);
@@ -34,13 +53,13 @@ public class ProductImageController {
         return ResponseEntity.ok(productImages);
     }
 
-    @PutMapping("/{imageId}/update")
+    @PutMapping("/{imageId}")
     public ResponseEntity<ProductImage> updateProductImage(@PathVariable Integer imageId, @RequestBody ProductImageDTO productImageDTO) {
         ProductImage updatedProductImage = productImageService.updateProductImage(imageId, productImageDTO);
         return ResponseEntity.ok(updatedProductImage);
     }
 
-    @DeleteMapping("/{imageId}/delete")
+    @DeleteMapping("/{imageId}")
     public ResponseEntity<String> deleteProductImage(@PathVariable Integer imageId) {
         productImageService.deleteProductImage(imageId);
         return ResponseEntity.ok("Product image deleted successfully");
