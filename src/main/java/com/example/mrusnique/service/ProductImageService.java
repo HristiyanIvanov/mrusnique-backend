@@ -1,19 +1,19 @@
 package com.example.mrusnique.service;
 
 import com.example.mrusnique.dto.ProductImageDTO;
-import com.example.mrusnique.dto.UserDTO;
 import com.example.mrusnique.model.ProductImage;
-import com.example.mrusnique.model.User;
 import com.example.mrusnique.repository.ProductImageRepository;
 import com.example.mrusnique.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 import java.nio.file.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductImageService {
@@ -39,6 +39,13 @@ public class ProductImageService {
 
     public List<ProductImage> getAllProductImages() {
         return productImageRepository.findAll();
+    }
+
+    public List<ProductImage> getLatestProductImages(int count) {
+        Pageable pageable = PageRequest.of(0, count, Sort.by(Sort.Order.desc("product.createdAt")));
+        List<ProductImage> productImages = productImageRepository.findAllByOrderByCreatedAtDesc(pageable);
+        return productImages;
+
     }
 
     private static final String UPLOAD_DIR = "uploads/";

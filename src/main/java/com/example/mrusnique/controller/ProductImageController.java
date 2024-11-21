@@ -23,6 +23,13 @@ public class ProductImageController {
         return ResponseEntity.ok(savedProductImage);
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<List<ProductImage>> getLatestProductImages(
+            @RequestParam(value = "count", required = false, defaultValue = "10") int count) {
+        List<ProductImage> latestImages = productImageService.getLatestProductImages(count);
+        return ResponseEntity.ok(latestImages);
+    }
+
     @GetMapping
     public ResponseEntity<List<ProductImage>> getAllProductImages() {
         List<ProductImage> productImages = productImageService.getAllProductImages();

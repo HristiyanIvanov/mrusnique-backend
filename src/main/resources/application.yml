@@ -2,11 +2,11 @@ spring:
     application:
       name: mrusnique
     datasource:
-      url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-      username: ${DB_USER}
-      password: ${DB_PASS}
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:postgresql://localhost:5432/mrusnique
+      username: postgres
+      password: ivanov4231
+      driver-class-name: org.postgresql.Driver
     jpa:
       properties:
         hibernate:
-          dialect: org.hibernate.dialect.MySQL8Dialect
+          dialect: org.hibernate.dialect.PostgreSQLDialect
